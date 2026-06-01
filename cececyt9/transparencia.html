@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Portal de Transparencia y Archivos - CECyT 9</title>
+    
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', 'Inter', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .portal-container {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .custom-header {
+            background: linear-gradient(rgba(10, 47, 68, 0.521), rgba(10, 47, 68, 0.85)), url('header.jpeg');
+            background-size: cover;
+            background-position: center;
+            padding: 3.5rem 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 180px;
+        }
+
+        .custom-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.3px;
+            line-height: 1.4;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            max-width: 850px;
+        }
+
+        .custom-header p {
+            font-size: 0.85rem;
+            color: #e0eef7;
+            margin-top: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .disclaimer-banner {
+            background: #fff3cd;
+            color: #856404;
+            border-bottom: 1px solid #ffeeba;
+            padding: 0.75rem 1.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8fafd;
+            border-bottom: 1px solid #e2edf2;
+            gap: 0.25rem;
+            padding: 1rem 1.8rem 0 1.8rem;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 0.8rem 1.4rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #2c3e4e;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #0a2f44;
+            border-bottom: 3px solid #0a2f44;
+        }
+
+        .tab-btn:not(.active):hover {
+            background: #e9f0f5;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 2.2rem;
+            animation: fade 0.25s ease-out;
+        }
+
+        .tab-content.active-tab {
+            display: block;
+        }
+
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(6px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        /* Buscador Rediseñado con Estilo Moderno */
+        .search-container {
+            margin-bottom: 2rem;
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 1.8rem;
+            border: 1px solid #dce7ee;
+            box-shadow: 0 4px 12px rgba(10, 47, 68, 0.03);
+        }
+
+        .search-container label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #0a2f44;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.8px;
+        }
+
+        .search-container input[type="text"] {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            padding-right: 3rem;
+            font-size: 0.95rem;
+            color: #1e4660;
+            background-color: #f4f8fa;
+            border: 1.5px solid #cbdde9;
+            border-radius: 1.2rem;
+            outline: none;
+            transition: all 0.25s ease;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%235f7f8c' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: calc(100% - 1.2rem) center;
+            background-size: 1.15rem;
+        }
+
+        .search-container input[type="text"]:focus {
+            background-color: #ffffff;
+            border-color: #0a2f44;
+            box-shadow: 0 0 0 4px rgba(10, 47, 68, 0.1);
+            color: #0a2f44;
+        }
+
+        .search-container input[type="text"]::placeholder {
+            color: #8fa7b3;
+            font-weight: 400;
+        }
+
+        .sub-layout {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .sub-sidebar {
+            flex: 0 0 240px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            border-right: 1px solid #e2edf2;
+            padding-right: 1rem;
+        }
+
+        .sub-link {
+            background: transparent;
+            border: none;
+            text-align: left;
+            padding: 0.7rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #4a6572;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .sub-link.active-sub {
+            background: #ecf3f8;
+            color: #0a2f44;
+            padding-left: 1.2rem;
+            border-left: 4px solid #0a2f44;
+        }
+
+        .sub-link:hover:not(.active-sub) {
+            background: #f1f5f9;
+            color: #2c3e4e;
+        }
+
+        .sub-main {
+            flex: 1;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            color: #0a2f44;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1.2rem;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .doc-card {
+            background: #ffffff;
+            border: 1.5px solid #e2edf2;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .doc-card:hover {
+            border-color: #0a2f44;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+        }
+
+        .code-badge {
+            display: inline-block;
+            background: #e2edf2;
+            color: #0a2f44;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.3rem 0.6rem;
+            border-radius: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.8rem;
+        }
+
+        .code-badge.registro {
+            background: #fbe9e7;
+            color: #d84315;
+        }
+
+        .doc-meta {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #78909c;
+            margin-bottom: 0.4rem;
+        }
+
+        .doc-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1e4660;
+            line-height: 1.4;
+            margin-bottom: 0.6rem;
+        }
+
+        .doc-description {
+            font-size: 0.85rem;
+            color: #546e7a;
+            line-height: 1.5;
+            margin-bottom: 1.2rem;
+            flex-grow: 1;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            padding: 0.65rem 1.4rem;
+            border-radius: 3rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+            background: #0a2f44;
+            color: white;
+            text-align: center;
+        }
+
+        .download-btn:hover {
+            background: #1e4660;
+            transform: scale(0.98);
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            color: #5f7f8c;
+            font-size: 0.95rem;
+            background: #f9fbfd;
+            border-radius: 1.5rem;
+            border: 1px dashed #cbdde9;
+        }
+
+        .tech-support-section {
+            background: #f4f8fa;
+            border-top: 1px solid #dce7ee;
+            padding: 1.5rem 2.2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .tech-support-info h4 {
+            font-size: 0.95rem;
+            color: #0a2f44;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .tech-support-info p {
+            font-size: 0.8rem;
+            color: #546e7a;
+        }
+
+        .tech-support-emails {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .support-email-btn {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #0a2f44;
+            text-decoration: none;
+            background: #ffffff;
+            border: 1px solid #cbdde9;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            transition: all 0.2s ease;
+        }
+
+        .support-email-btn:hover {
+            background: #0a2f44;
+            color: #ffffff;
+            border-color: #0a2f44;
+        }
+
+        .custom-footer {
+            background: #0a2f44;
+            padding: 1.5rem 2.2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #c5d6e0;
+            line-height: 1.6;
+        }
+
+        .custom-footer strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .custom-footer a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .custom-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-legal {
+            margin-top: 0.6rem;
+            opacity: 0.8;
+            font-size: 0.7rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 0.6rem;
+        }
+
+        @media (max-width: 800px) {
+            .sub-layout {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .sub-sidebar {
+                flex: none;
+                border-right: none;
+                border-bottom: 1px solid #e2edf2;
+                padding-right: 0;
+                padding-bottom: 1rem;
+                flex-direction: row;
+                overflow-x: auto;
+            }
+            .sub-sidebar button {
+                white-space: nowrap;
+            }
+            .sub-link.active-sub {
+                border-left: none;
+                border-bottom: 3px solid #0a2f44;
+                border-radius: 0;
+            }
+            .tech-support-section {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .tab-content { padding: 1.5rem; }
+            .tabs { padding: 0.8rem 1rem 0 1rem; }
+            .tab-btn { padding: 0.6rem 1rem; font-size: 0.85rem; }
+            .custom-header h1 { font-size: 1.2rem; }
+            .custom-header { padding: 2.5rem 1.5rem; min-height: 150px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="portal-container">
+    <div class="disclaimer-banner">
+        Aviso: Al acceder a este portal, los usuarios reconocen y aceptan de mutuo acuerdo que somos una comunidad de estudio totalmente independiente de cualquier institución oficial.
+    </div>
+
+    <!-- Header con imagen de fondo -->
+    <div class="custom-header">
+        <h1>Comunidad de Estudio del Centro de Estudios Científicos y Tecnológicos 9 <br> "Juan de Dios Bátiz"</h1>
+        <p>Sistema de Codificación y Transparencia Institucional</p>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="tab-ad">AD - Administración</button>
+        <button class="tab-btn" data-tab="tab-co">CO - Comunicados</button>
+    </div>
+
+    <!-- Contenedor del Buscador -->
+    <div style="padding: 2rem 2.2rem 0 2.2rem;">
+        <div class="search-container" style="margin-bottom: 0;">
+            <label for="globalSearch">Buscador de Folios y Claves</label>
+            <input type="text" id="globalSearch" placeholder="Busca por código o palabras clave (Ej: D-001, CO-0001)..." autocomplete="off">
+        </div>
+    </div>
+
+    <div id="tab-ad" class="tab-content active-tab">
+        <div class="sub-layout" style="gap: 3.5rem;">
+            
+            <div class="sub-sidebar" style="padding-right: 2rem; border-right: 1px solid #e2edf2; gap: 0.8rem;">
+                <button class="sub-link active-sub" data-sub="nl01">NL01 - Convocatorias</button>
+                <button class="sub-link" data-sub="nl02">NL02 - Procesos</button>
+            </div>
+            
+            <div class="sub-main">
+                <div id="nl01" class="sub-content">
+                    <h3 class="section-title" style="margin-bottom: 1.8rem;">NL01 - Convocatorias Oficiales</h3>
+                    
+                    <div class="results-grid" style="gap: 2rem;">
+                        
+                        <div class="doc-card" data-search="ad nl01 d-001 convocatoria ingreso registro nuevas comisiones">
+                            <div>
+                                <span class="code-badge">D-001</span>
+                                <div class="doc-meta">Convocatoria Vigente</div>
+                                <div class="doc-title">Proceso de Selección para Comisiones Académicas</div>
+                                <div class="doc-description">Bases, requisitos y lineamientos para los alumnos interesados en integrarse a las áreas de apoyo técnico.</div>
+                            </div>
+                            <a href="registro_comisiones_academicas.html" class="download-btn">Ver Convocatoria</a>
+                        </div>
+
+                        <div class="doc-card" data-search="ad nl01 d-002 registro grupo vendedores comunidad estudiantil">
+                            <div>
+                                <span class="code-badge">D-002</span>
+                                <div class="doc-meta">Convocatoria Abierta</div>
+                                <div class="doc-title">Registro al Grupo de Vendedores</div>
+                                <div class="doc-description">Proceso de inscripción para estudiantes interesados en integrarse al grupo de vendedores y así participar en actividades comerciales.</div>
+                            </div>
+                            <a href="registro_grupo_vendedores.html" class="download-btn">Ver Convocatoria</a>
+                        </div>
+                        <div class="doc-card" data-search="material didactico cececyt biblioteca repositorio libros apuntes presentaciones examenes anteriores difusion almacenamiento">
+                            <div>
+                                <span class="code-badge">D-003</span>
+                                <div class="doc-meta">Formulario Disponible</div>
+                                <div class="doc-title">Envío de Material Didáctico para Difusión y Almacenamiento</div>
+                                <div class="doc-description">
+                                    Formulario para compartir libros, apuntes, presentaciones, guías de estudio, material de apoyo y exámenes de convocatorias anteriores para su posible difusión y almacenamiento en el repositorio académico del CECECYT, sujeto a revisión de legalidad y cumplimiento normativo.
+                                </div>
+                            </div>
+                            <a href="https://forms.gle/Q7SD478jD8ZNbWrG8" class="download-btn">Acceder al Formulario</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="nl02" class="sub-content" style="display:none;">
+                    <h3 class="section-title" style="margin-bottom: 1.8rem;">NL02 - Procesos y Manuales de Operación</h3>
+                    <div class="results-grid" style="gap: 2rem;">
+                        <div class="doc-card" data-search="ad nl02 d-004 proceso validacion tramites internos manual">
+                            <div>
+                                <span class="code-badge">D-004</span>
+                                <div class="doc-meta">Guía de Procesos Administrativos Internos</div>
+                                <div class="doc-description">Flujo oficializado para la entrega, revisión y aprobación de material didáctico y solicitudes.</div>
+                            </div>
+                            <a href="https://drive.google.com/file/d/1lXUtQHiZAQAndn48BmoRudjNhzdBMUCp/view?usp=sharing" class="download-btn">Ver Proceso</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-co" class="tab-content">
+        <h3 class="section-title">CO - Historial de Comunicados Oficiales</h3>
+        <p style="font-size: 0.85rem; color:#5f7f8c; margin-bottom: 1.5rem;">Registro cronológico emitido a partir del 01/06/2025.</p>
+        <div class="results-grid">
+            <div class="doc-card" data-search="co co-0001 paro estudiantil cecyt 9 medidas comunidad">
+                <div>
+                    <span class="code-badge">CO-0001</span>
+                    <div class="doc-meta">Publicado: 17/5/2025</div>
+                    <div class="doc-title">Comunicado sobre medidas ante el paro estudiantil en el CECyT #9</div>
+                    <div class="doc-description">Información oficial dirigida a la comunidad estudiantil sobre acciones, protocolos y continuidad académica derivada del paro estudiantil.</div>
+                </div>
+                <a href="https://drive.google.com/file/d/1wTiOZpvei_kyFQfEd3Vn6SU55sxJOOIb/view?usp=sharing" class="download-btn">Leer Comunicado</a>
+            </div>
+
+            <div class="doc-card" data-search="co co-0002 redes sociales cececyt 9 comunidad digital">
+                <div>
+                    <span class="code-badge">CO-0002</span>
+                    <div class="doc-meta">Publicado: 23/5/2025</div>
+                    <div class="doc-title">Creación de Redes Sociales del CECECyT #9</div>
+                    <div class="doc-description">Presentación oficial de las plataformas digitales y redes sociales destinadas a fortalecer la comunicación con la comunidad estudiantil.</div>
+                </div>
+                <a href="https://drive.google.com/file/d/1EiGlBiDyGU3P-lFswyyHeGhe5vDjweOr/view?usp=sharing" class="download-btn">Leer Comunicado</a>
+            </div>
+
+            <div class="doc-card" data-search="co co-0003 comunidad estudiantil actividades organizacion">
+                <div>
+                    <span class="code-badge">CO-0003</span>
+                    <div class="doc-meta">Publicado: 27/5/2025</div>
+                    <div class="doc-title">Organización y Participación de la Comunidad Estudiantil</div>
+                    <div class="doc-description">Lineamientos y estrategias para fortalecer la participación activa y la colaboración dentro de la comunidad educativa.</div>
+                </div>
+                <a href="https://drive.google.com/file/d/1HK4LGxUo9gaKFPd5rPXwfLGgZaMbMY2C/view?usp=sharing" class="download-btn">Leer Comunicado</a>
+            </div>
+
+            <div class="doc-card" data-search="co co-0004 colaboración cececyt 9 emiliocolor">
+                <div>
+                    <span class="code-badge">CO-0004</span>
+                    <div class="doc-meta">Publicado: 25/6/2025</div>
+                    <div class="doc-title">Colaboración entre la Comunidad de Estudio del CECECyT #9 con EmilioColor®</div>
+                    <div class="doc-description">Anuncio oficial sobre la colaboración establecida entre la Comunidad de Estudio del Centro de Estudios Científicos y Tecnológicos 9 y EmilioColor®.</div>
+                </div>
+                <a href="https://drive.google.com/file/d/17BIHLVkvSF0ilIjm0JOms0neOw5hrBCZ/view?usp=sharing" class="download-btn">Leer Comunicado</a>
+            </div>
+
+            <div class="doc-card" data-search="co co-0004-1 colaboracion extendida cececyt 9 emiliocolor">
+                <div>
+                    <span class="code-badge">CO-0004 (1)</span>
+                    <div class="doc-meta">Publicado: 31/5/2026</div>
+                    <div class="doc-title">Colaboración EXTENDIDA entre la Comunidad de Estudio del CECECyT #9 con EmilioColor®</div>
+                    <div class="doc-description">Expansión de los acuerdos colaborativos, actividades y proyectos conjuntos entre la comunidad académica y EmilioColor®.</div>
+                </div>
+                <a href="https://drive.google.com/file/d/14ZQAU8_nyUvsxKMS26nQMuDz6ZegDVaC/view?usp=sharing" class="download-btn">Leer Comunicado</a>
+            </div>
+
+            <div class="doc-card" data-search="co co-0005 manual identidad grafica cececyt 9">
+                <div>
+                    <span class="code-badge">CO-0005</span>
+                    <div class="doc-meta">Publicado: 28/07/2025</div>
+                    <div class="doc-title">Desarrollo del Manual de Identidad Gráfica de la Comunidad de Estudio del CECyT #9</div>
+                    <div class="doc-description">Documento preliminar sobre la creación, implementación y lineamientos visuales oficiales de la identidad gráfica institucional.</div>
+                </div>
+                <a href="https://drive.google.com/file/d/11bmXAheScmKqrAEs8lkuvpuBso82FYpN/view?usp=sharing" class="download-btn">Leer Comunicado</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de Soporte Técnico -->
+    <div class="tech-support-section">
+        <div class="tech-support-info">
+            <h4>Soporte Técnico</h4>
+            <p>¿Tienes problemas con la plataforma o alguna duda? Contáctanos de inmediato.</p>
+        </div>
+        <div class="tech-support-emails">
+            <a href="mailto:batizcomunidad@gmail.com" class="support-email-btn">batizcomunidad@gmail.com</a>
+            <a href="mailto:contacto@emiliocolor.com" class="support-email-btn">contacto@emiliocolor.com</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="custom-footer">
+        <div>
+            Portal Informativo de Transparencia Estudiantil. Desarrollado con el apoyo de 
+            <a href="https://emiliocolor.com/" target="_blank" rel="noopener noreferrer">
+                <strong>EmilioColor®</strong>
+            </a> para la Comunidad de Estudio del CECyT 9.
+        </div>
+        <div style="margin-top: 0.3rem; opacity: 0.9;">
+            Copyright © 2025 | CECECyT9 | Todos los derechos reservados.
+        </div>
+        <div class="footer-legal">
+            Este sitio web ha sido creado y es mantenido con fines estrictamente educativos e informativos, reconociendo explícitamente el carácter de comunidad independiente de todos sus integrantes.
+        </div>
+    </div>
+</div>
+
+<script>
+    const mainTabs = document.querySelectorAll('.tabs .tab-btn');
+    const mainContents = document.querySelectorAll('.tab-content');
+
+    mainTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = tab.getAttribute('data-tab');
+            
+            mainTabs.forEach(t => t.classList.remove('active'));
+            mainContents.forEach(c => c.classList.remove('active-tab'));
+            
+            tab.classList.add('active');
+            
+            const targetElement = document.getElementById(target);
+            if (targetElement) {
+                targetElement.classList.add('active-tab');
+            }
+            
+            ejecutarBusqueda();
+        });
+    });
+
+    const subLayouts = document.querySelectorAll('.sub-layout');
+    
+    subLayouts.forEach(layout => {
+        const subLinks = layout.querySelectorAll('.sub-link');
+        const subContents = layout.querySelectorAll('.sub-content');
+        
+        subLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const targetSub = link.getAttribute('data-sub');
+                
+                subLinks.forEach(l => l.classList.remove('active-sub'));
+                subContents.forEach(c => c.style.display = 'none');
+                
+                link.classList.add('active-sub');
+                const targetSubElement = layout.querySelector(`#${targetSub}`);
+                if (targetSubElement) {
+                    targetSubElement.style.display = 'block';
+                }
+                
+                ejecutarBusqueda();
+            });
+        });
+    });
+
+    const searchInput = document.getElementById('globalSearch');
+
+    function ejecutarBusqueda() {
+        const query = searchInput.value.toLowerCase().trim();
+        
+        const activeTabContent = document.querySelector('.tab-content.active-tab');
+        if (!activeTabContent) return;
+
+        const existingAlert = activeTabContent.querySelectorAll('.no-results');
+        existingAlert.forEach(alert => alert.remove());
+
+        const activeSubContent = activeTabContent.querySelector('.sub-content[style*="display: block"]') || activeTabContent.querySelector('.sub-content:not([style*="display: none"])');
+        
+        let gridToSearch = activeSubContent ? activeSubContent.querySelector('.results-grid') : activeTabContent.querySelector('.results-grid');
+        if (!gridToSearch) return;
+
+        const cards = gridToSearch.querySelectorAll('.doc-card');
+        let visibles = 0;
+
+        cards.forEach(card => {
+            const dataSearch = card.getAttribute('data-search').toLowerCase();
+            const textContent = card.textContent.toLowerCase();
+
+            if (dataSearch.includes(query) || textContent.includes(query)) {
+                card.style.display = 'flex';
+                visibles++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        if (visibles === 0 && cards.length > 0) {
+            const noResultsElement = document.createElement('div');
+            noResultsElement.className = 'no-results';
+            noResultsElement.textContent = 'No hay claves ni folios registrados en esta sección que coincidan con tu búsqueda.';
+            gridToSearch.appendChild(noResultsElement);
+        }
+    }
+
+    searchInput.addEventListener('input', ejecutarBusqueda);
+</script>
+
+</body>
+</html>
