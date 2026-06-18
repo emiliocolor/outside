@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" type="image/png" href="https://emiliocolor.com/img-logos/favicon.png">
+    <link rel="apple-touch-icon" href="https://emiliocolor.com/img-logos/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio de Electromagnetismo - Acceso</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #1e293b;
+            --primary: #0f172a;
+            --btn-dark-blue: #1c62d2;
+            --info-gray: #f1f5f9; 
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 35px 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .login-header h1 {
+            font-size: 1.6rem;
+            color: var(--primary);
+            margin: 0 0 8px 0;
+            font-weight: 800;
+        }
+
+        .login-header p {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .alert-info {
+            background-color: var(--info-gray);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 25px;
+            font-size: 0.85rem;
+            color: #475569;
+            line-height: 1.4;
+        }
+
+        .alert-info i {
+            color: var(--btn-dark-blue);
+            margin-right: 6px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-main);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 11px 15px 11px 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            background-color: #ffffff;
+            box-sizing: border-box;
+            transition: border-color 0.15s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #94a3b8;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--btn-dark-blue);
+            color: #ffffff;
+            border: none;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 2px 4px rgba(28, 98, 210, 0.15);
+            transition: opacity 0.15s ease;
+            margin-top: 25px;
+        }
+
+        .btn-login:hover {
+            opacity: 0.9;
+        }
+
+        .error-message {
+            color: #d01b1b;
+            background-color: #fef2f2;
+            border: 1px solid #fca5a5;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-top: 15px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-return {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .btn-return-panel {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #334155;
+            padding: 8px 16px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+        .btn-return-panel:hover {
+            opacity: 0.85;
+        }
+
+        #dynamic-footer {
+            margin-top: 30px;
+            width: 100%;
+        }
+        .footer-main {
+            background-color: #ffffff;
+            border-top: 1px solid var(--border-color);
+            padding: 20px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            font-size: 0.85rem;
+            color: #334155;
+        }
+        .footer-logos-left {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .footer-logo-img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+        .footer-center-text {
+            flex: 1;
+            text-align: center;
+            font-weight: 500;
+        }
+        .footer-center-text a {
+            color: var(--btn-dark-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .footer-center-text a:hover {
+            text-decoration: none;
+        }
+        .footer-report {
+            flex-shrink: 0;
+        }
+        .footer-report a {
+            color: #475569;
+            text-decoration: none;
+            border-bottom: 1px dashed #cbd5e1;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        @media (max-width: 700px) {
+            .footer-main {
+                flex-direction: column;
+                text-align: center;
+                justify-content: center;
+            }
+            .footer-center-text {
+                order: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-wrapper">
+    <div class="login-card">
+        <div class="nav-return">
+            <a href="panel.html" class="btn-return-panel">
+                <i class="fas fa-arrow-left"></i> Ir al Panel principal
+            </a>
+        </div>
+        <div class="login-header">
+            <h1>Portal de Acceso</h1>
+            <p>Laboratorio de Electromagnetismo</p>
+        </div>
+
+        <div class="alert-info">
+            <i class="fas fa-key"></i> Ingrese la credencial asignada para desbloquear su simulación correspondiente.
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="credencial">Credencial de Práctica</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock"></i>
+                    <input 
+                        type="text" 
+                        id="credencial" 
+                        class="form-control" 
+                        placeholder="Introduce los 5 caracteres aquí" 
+                        autocomplete="off" 
+                        required
+                    >
+                </div>
+            </div>
+
+            <button type="submit" class="btn-login">
+                <span>Ingresar al Laboratorio</span>
+                <i class="fas fa-sign-in-alt"></i>
+            </button>
+            
+            <div id="errorBox" class="error-message">
+                <i class="fas fa-exclamation-circle"></i> Credencial incorrecta o no asignada.
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="dynamic-footer"></div>
+<script src="footer.js"></script>
+<script src="proteccion.js"></script>
+<script>
+    // Mapeo de credenciales -> página del simulador
+    const credencialesValidas = {
+        "s23ds": "simulador_1.html",
+        "p36mx": "simulador_2.html",
+        "t78fg": "simulador_3.html",
+        "m42kl": "simulador_4.html"
+    };
+
+    function validarAcceso(event) {
+        event.preventDefault();
+        const credencial = document.getElementById("credencial").value.trim();
+        const destino = credencialesValidas[credencial];
+        const errorBox = document.getElementById("errorBox");
+
+        if (destino) {
+            // Guardar en sessionStorage la sesión activa: indicamos qué simulador se autorizó
+            sessionStorage.setItem("simuladorAutorizado", destino);
+            // Redirigir al simulador correspondiente
+            window.location.href = destino;
+        } else {
+            errorBox.style.display = "flex";
+            setTimeout(() => {
+                errorBox.style.display = "none";
+            }, 3000);
+        }
+    }
+
+    const form = document.getElementById("loginForm");
+    form.addEventListener("submit", validarAcceso);
+</script>
+</body>
+</html>

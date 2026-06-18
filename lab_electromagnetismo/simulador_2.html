@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" type="image/png" href="https://emiliocolor.com/img-logos/favicon.png">
+    <link rel="apple-touch-icon" href="https://emiliocolor.com/img-logos/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Equilibrio Magnético en Plano Inclinado</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<script>
+/**
+ * ======================================================================
+ * PROPIEDAD INTELECTUAL - EmilioColor®
+ * ======================================================================
+ * Este código fuente, su lógica, diseño visual y todos los contenidos
+ * asociados a las simulaciones son propiedad exclusiva de EmilioColor®.
+ * Queda prohibida la copia, reproducción, distribución o modificación
+ * no autorizada de este material.
+ * 
+ * © 2026 EmilioColor®. Todos los derechos reservados.
+ * ======================================================================
+ */
+</script>
+
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-main: #1e293b;
+            --primary: #0f172a;
+            
+            --btn-dark-blue: #1c62d2;
+            --btn-dark-red: #d01b1b;
+            --btn-dark-orange: #e36a15;
+            --btn-dark-teal: #0ab19e;
+            --btn-dark-gray: #334155;
+
+            --state-balanced: #109e6f;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+        }
+
+        .header-logo {
+            max-height: 60px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        h1 { 
+            text-align: center; 
+            color: var(--primary); 
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 800;
+            flex: 1;
+        }
+
+        .btn-logout {
+            background-color: var(--btn-dark-gray);
+            padding: 8px 18px;
+            border-radius: 15px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: opacity 0.2s;
+            font-size: 0.9rem;
+        }
+        .btn-logout:hover {
+            opacity: 0.85;
+        }
+
+        .description {
+            text-align: center;
+            margin: -20px auto 30px auto;
+            max-width: 700px;
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 25px;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-top: 0;
+            padding-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .simulation-grid {
+            display: grid;
+            grid-template-columns: 440px 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .canvas-area-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .canvas-box-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #ffffff; 
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        canvas {
+            width: 100%;
+            height: auto;
+            max-width: 420px;
+            background: transparent;
+        }
+
+        #simCanvas {
+            cursor: crosshair;
+        }
+
+        #vectorCanvas {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .controls-subgrid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .label-tag {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 0.05em;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin-top: 5px;
+            accent-color: var(--btn-dark-blue);
+        }
+
+        .slider-label-container {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .explanation-box, .vector-insights-box {
+            background: #ffffff;
+            padding: 20px;
+            font-size: 0.95rem;
+            min-height: 80px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .explanation-box h4, .vector-insights-box h4 {
+            margin: 0 0 15px 0;
+            font-size: 1.1rem;
+            color: var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .formula-tag {
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.06);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .equation-step {
+            margin-bottom: 20px;
+            color: #334155;
+        }
+
+        .equation-title {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .equation-desc {
+            font-size: 0.85rem;
+            color: #475569;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        .math-container {
+            background: rgba(0, 0, 0, 0.02);
+            padding: 10px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            min-height: 28px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .btn-action {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 15px;
+            color: #ffffff !important;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            transition: opacity 0.2s, background-color 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn-action:hover { 
+            opacity: 0.85; 
+        }
+
+        .btn-reset {
+            background-color: var(--btn-dark-red);
+            max-width: 200px;
+        }
+
+        .vector-row {
+            margin-bottom: 8px;
+            line-height: 1.4;
+            padding-left: 12px;
+            position: relative;
+            font-size: 0.88rem;
+        }
+
+        .vector-row::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+        }
+
+        .row-mu::before { background-color: #10b981; }
+        .row-b::before { background-color: #b91c1c; }
+        .row-tau::before { background-color: #0284c7; }
+        .row-current::before { background-color: var(--btn-dark-orange); }
+
+        @media (max-width: 768px) {
+            .simulation-grid {
+                grid-template-columns: 1fr;
+            }
+            .controls-subgrid {
+                grid-template-columns: 1fr;
+            }
+            .btn-reset {
+                max-width: 100%;
+            }
+            .header-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ========== VERIFICACIÓN DE SESIÓN ========== -->
+<script>
+    (function() {
+        const sesion = sessionStorage.getItem("simuladorAutorizado");
+        const paginaActual = "simulador_2.html";
+        if (!sesion || sesion !== paginaActual) {
+            window.location.href = "login.html";
+        }
+    })();
+</script>
+<!-- =========================================== -->
+
+<div class="container">
+    <div class="header-container">
+        <img src="log.png" alt="Logo Laboratorio" class="header-logo" onerror="this.style.display='none'">
+        <h1>Laboratorio de Electromagnetismo</h1>
+        <button class="btn-logout" onclick="cerrarSesion()">
+            <i class="fas fa-sign-out-alt"></i> Volver a inicio
+        </button>
+    </div>
+
+    <p class="description">
+        Modelador físico dinámico interactivo basado en la rampa de equilibrio magnético. Pasa el cursor sobre las puntas de los vectores para identificar sus magnitudes físicas.
+    </p>
+
+    <div class="card">
+        <div class="card-title">
+            <span>2. Magnetismo: Geometría y Fuerzas del Cilindro en la Rampa</span>
+            <button class="btn-action btn-reset" onclick="resetSimulador()"><i class="fas fa-undo"></i> Valores Originales</button>
+        </div>
+
+        <div class="simulation-grid">
+            
+            <div class="canvas-area-container">
+                <div class="canvas-box-wrapper" id="canvasWrapper">
+                    <canvas id="simCanvas" width="420" height="420"></canvas>
+                </div>
+
+                <div class="vector-insights-box">
+                    <h4>
+                        <span>Estado de Vectores Dinámicos</span>
+                        <span class="formula-tag"><i class="fas fa-wave-square"></i> Telemetría</span>
+                    </h4>
+                    <div class="vector-row row-mu">
+                        <strong>Momento Dipolar (μ):</strong> Vector perpendicular al devanado longitudinal. Su magnitud actual es de <span id="insight-mu" style="color: #10b981; font-weight: bold;">0.000</span> A·m². Gira solidario al cilindro buscando alinearse con el campo vertical.
+                    </div>
+                    <div class="vector-row row-b">
+                        <strong>Campo Magnético (B):</strong> Vector uniforme vertical ascendente con intensidad de <span id="insight-b" style="color: #b91c1c; font-weight: bold;">0.00</span> T. Ejerce la fuerza sobre los tramos longitudinales de longitud L.
+                    </div>
+                    <div class="vector-row row-tau">
+                        <strong>Fuerza Gravitacional (w):</strong> Fuerza dirigida verticalmente hacia abajo con una magnitud de <span id="insight-tau" style="color: #0284c7; font-weight: bold;">0.0000</span> N·m. 
+                    </div>
+                    <div class="vector-row row-current">
+                        <strong>Corriente (I):</strong> <span id="insight-current" style="color: var(--btn-dark-orange); font-weight: bold;">0.00 A</span> (equilibrio: <span id="insight-current-eq" style="color: var(--btn-dark-gray);">0.00 A</span>) — ajusta con el deslizador.
+                    </div>
+                </div>
+
+                <canvas id="vectorCanvas" width="420" height="200"></canvas>
+            </div>
+
+            <div class="controls-panel">
+                <div class="controls-subgrid" style="padding: 15px; margin-bottom: -5px;">
+                    <div>
+                        <div class="slider-label-container">
+                            <span class="label-tag" style="margin:0;">Masa (m)</span>
+                            <span id="val-m" style="color: var(--btn-dark-red); font-weight: bold;">262 g</span>
+                        </div>
+                        <input type="range" id="param-m" min="50" max="600" value="262" step="1">
+                    </div>
+                    
+                    <div>
+                        <div class="slider-label-container">
+                            <span class="label-tag" style="margin:0;">Vueltas (N)</span>
+                            <span id="val-N" style="color: var(--btn-dark-teal); font-weight: bold;">13</span>
+                        </div>
+                        <input type="range" id="param-N" min="1" max="40" value="13" step="1">
+                    </div>
+                </div>
+
+                <div class="controls-subgrid">
+                    <div>
+                        <div class="slider-label-container">
+                            <span class="label-tag" style="margin:0;">Campo Magnético (B)</span>
+                            <span id="val-B" style="color: var(--btn-dark-blue); font-weight: bold;">477 mT</span>
+                        </div>
+                        <input type="range" id="param-B" min="50" max="1000" value="477" step="1">
+                    </div>
+
+                    <div>
+                        <div class="slider-label-container">
+                            <span class="label-tag" style="margin:0;">Ángulo Rampa (&theta;)</span>
+                            <span id="val-angle" style="color: #8b5cf6; font-weight: bold;">30°</span>
+                        </div>
+                        <input type="range" id="param-angle" min="10" max="60" value="30" step="1">
+                    </div>
+
+                    <div>
+                        <div class="slider-label-container">
+                            <span class="label-tag" style="margin:0;">Largo Cilindro (L)</span>
+                            <span id="val-L" style="color: var(--btn-dark-gray); font-weight: bold;">12.7 cm</span>
+                        </div>
+                        <input type="range" id="param-L" min="5.0" max="25.0" value="12.7" step="0.1">
+                    </div>
+
+                    <div>
+                        <div class="slider-label-container">
+                            <span class="label-tag" style="margin:0;">Radio Base (r)</span>
+                            <span id="val-r" style="color: var(--btn-dark-orange); font-weight: bold;">3.5 cm</span>
+                        </div>
+                        <input type="range" id="param-r" min="1.5" max="6.0" value="3.5" step="0.1">
+                    </div>
+                </div>
+
+                <!-- Control de corriente -->
+                <div class="controls-subgrid" style="padding: 15px; margin-top: -5px;">
+                    <div style="grid-column: span 2;">
+                        <div class="slider-label-container">
+                            <span class="label-tag" style="margin:0;">Corriente (I)</span>
+                            <span id="val-I" style="color: var(--btn-dark-orange); font-weight: bold;">1.50 A</span>
+                        </div>
+                        <input type="range" id="param-I" min="0" max="5.0" value="1.5" step="0.01">
+                    </div>
+                </div>
+
+                <div class="explanation-box" id="infoBox">
+                    <h4>
+                        <span>Resultados y Memoria de Cálculo</span>
+                        <span class="formula-tag"><i class="fas fa-calculator"></i> Métricas</span>
+                    </h4>
+                    
+                    <div class="equation-step">
+                        <div class="equation-title">1. Torque por gravedad respecto al punto de contacto (&tau;g)</div>
+                        <div class="equation-desc">Representa el momento de torsión generado por el peso del cilindro actuando en su centro de masa. Utiliza el radio de la base como brazo de palanca para intentar hacer rodar el cuerpo rampa abajo:</div>
+                        <div class="math-container" id="katex-taug"></div>
+                    </div>
+
+                    <div class="equation-step">
+                        <div class="equation-title">2. Torque magnético restrictivo (&tau;m)</div>
+                        <div class="equation-desc">Es el momento de torsión de origen magnético generado sobre las espiras. Nace de la interacción entre el momento dipolar magnético (&mu;) del devanado longitudinal y las líneas del campo vertical, oponiéndose al giro por gravedad:</div>
+                        <div class="math-container" id="katex-taum"></div>
+                    </div>
+
+                    <div class="equation-step" style="margin-bottom: 0;">
+                        <div class="equation-title">3. Corriente de equilibrio calculada (I<sub>eq</sub>)</div>
+                        <div class="equation-desc">Es la intensidad de corriente exacta que debe circular por el conductor para que el torque magnético iguale perfectamente al torque gravitacional, logrando la estática o equilibrio mecánico absoluto en la rampa:</div>
+                        <div class="math-container" id="katex-current"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // Función para cerrar sesión y volver al login
+    function cerrarSesion() {
+        sessionStorage.removeItem("simuladorAutorizado");
+        window.location.href = "login.html";
+    }
+
+    // Función auxiliar para dibujar flecha con punta
+    function drawArrow(ctx, fromX, fromY, toX, toY, color, headSize = 10) {
+        const dx = toX - fromX;
+        const dy = toY - fromY;
+        const length = Math.hypot(dx, dy);
+        if (length < 1) return;
+        const angle = Math.atan2(dy, dx);
+
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.lineWidth = 3.5;
+
+        ctx.beginPath();
+        ctx.moveTo(fromX, fromY);
+        ctx.lineTo(toX, toY);
+        ctx.stroke();
+
+        ctx.translate(toX, toY);
+        ctx.rotate(angle);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(-headSize, -headSize / 2.5);
+        ctx.lineTo(-headSize, headSize / 2.5);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.restore();
+    }
+
+    const canvas = document.getElementById('simCanvas');
+    const ctx = canvas.getContext('2d');
+    const vCanvas = document.getElementById('vectorCanvas');
+    const vCtx = vCanvas.getContext('2d');
+
+    const insightMu = document.getElementById('insight-mu');
+    const insightB = document.getElementById('insight-b');
+    const insightTau = document.getElementById('insight-tau');
+    const insightCurrent = document.getElementById('insight-current');
+    const insightCurrentEq = document.getElementById('insight-current-eq');
+
+    let vectorMuPos = { x: 0, y: 0, valor: "" };
+    let vectorBPos = { x: 0, y: 0, valor: "" };
+    let vectorWPos = { x: 0, y: 0, valor: "" };
+    let mousePos = { x: -100, y: -100 };
+
+    const katexTauG = document.getElementById('katex-taug');
+    const katexTauM = document.getElementById('katex-taum');
+    const katexCurrent = document.getElementById('katex-current');
+
+    const inputs = {
+        m: document.getElementById('param-m'),
+        N: document.getElementById('param-N'),
+        B: document.getElementById('param-B'),
+        angle: document.getElementById('param-angle'),
+        L: document.getElementById('param-L'),
+        r: document.getElementById('param-r'),
+        I: document.getElementById('param-I')
+    };
+
+    const outputs = {
+        m: document.getElementById('val-m'),
+        N: document.getElementById('val-N'),
+        B: document.getElementById('val-B'),
+        angle: document.getElementById('val-angle'),
+        L: document.getElementById('val-L'),
+        r: document.getElementById('val-r'),
+        I: document.getElementById('val-I')
+    };
+
+    function draw() {
+        const mGrams = parseFloat(inputs.m.value);
+        const N = parseInt(inputs.N.value);
+        const mTesla = parseFloat(inputs.B.value);
+        const angleDeg = parseInt(inputs.angle.value);
+        const LCm = parseFloat(inputs.L.value);
+        const rCm = parseFloat(inputs.r.value);
+        const I = parseFloat(inputs.I.value);
+
+        outputs.m.innerText = mGrams + " g";
+        outputs.N.innerText = N;
+        outputs.B.innerText = mTesla + " mT";
+        outputs.angle.innerText = angleDeg + "°";
+        outputs.L.innerText = LCm + " cm";
+        outputs.r.innerText = rCm + " cm";
+        outputs.I.innerText = I.toFixed(2) + " A";
+
+        const m = mGrams / 1000;
+        const B = mTesla / 1000;
+        const L = LCm / 1000;
+        const r = rCm / 1000;
+        const g = 9.81;
+        const thetaRad = (angleDeg * Math.PI) / 180;
+
+        // Cálculos
+        const tau_g = m * g * r * Math.sin(thetaRad);
+        const areaEspira = 2 * r * L;
+        const mu = N * I * areaEspira;
+        const tau_m = mu * B * Math.sin(thetaRad);
+        const I_eq = (m * g) / (2 * N * L * B);
+
+        // Actualizar telemetría
+        insightMu.innerText = mu.toFixed(3);
+        insightB.innerText = B.toFixed(2);
+        insightTau.innerText = tau_g.toFixed(4);
+        insightCurrent.innerText = I.toFixed(2) + " A";
+        insightCurrentEq.innerText = I_eq.toFixed(2) + " A";
+
+        // Ecuaciones con valores numéricos
+        if (typeof katex !== 'undefined') {
+            katex.render(`\\tau_g = m \\cdot g \\cdot r \\cdot \\sin\\theta = ${m.toFixed(3)}\\text{ kg} \\cdot 9.81 \\cdot ${r.toFixed(3)}\\text{ m} \\cdot \\sin(${angleDeg}^\\circ) = ${tau_g.toFixed(4)}\\text{ N}\\cdot\\text{m}`, katexTauG);
+            katex.render(`\\tau_m = N \\cdot I \\cdot (2 \\cdot r \\cdot L) \\cdot B \\cdot \\sin\\theta = ${N} \\cdot ${I.toFixed(2)} \\cdot (2 \\cdot ${r.toFixed(3)} \\cdot ${L.toFixed(3)}) \\cdot ${B.toFixed(3)} \\cdot \\sin(${angleDeg}^\\circ) = ${tau_m.toFixed(4)}\\text{ N}\\cdot\\text{m}`, katexTauM);
+            katex.render(`I_{eq} = \\frac{m \\cdot g}{2 \\cdot N \\cdot L \\cdot B} = \\frac{${m.toFixed(3)} \\cdot 9.81}{2 \\cdot ${N} \\cdot ${L.toFixed(3)} \\cdot ${B.toFixed(3)}} = ${I_eq.toFixed(2)}\\text{ A}`, katexCurrent);
+        }
+
+        // --- Dibujo principal ---
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Líneas de campo B (verticales)
+        ctx.strokeStyle = 'rgba(185, 28, 28, 0.12)';
+        ctx.lineWidth = 2;
+        for (let x = 20; x < canvas.width; x += 40) {
+            ctx.beginPath();
+            ctx.moveTo(x, canvas.height - 20);
+            ctx.lineTo(x, 20);
+            ctx.stroke();
+            
+            ctx.fillStyle = 'rgba(185, 28, 28, 0.2)';
+            ctx.beginPath();
+            ctx.moveTo(x, 20);
+            ctx.lineTo(x - 4, 28);
+            ctx.lineTo(x + 4, 28);
+            ctx.fill();
+        }
+        ctx.fillStyle = '#b91c1c';
+        ctx.font = 'italic bold 18px sans-serif';
+        ctx.fillText('B', canvas.width - 25, 35);
+
+        // Rampa
+        const startRampX = 40;
+        const startRampY = 350;
+        const rampLength = 340;
+        const endRampX = startRampX + rampLength * Math.cos(thetaRad);
+        const endRampY = startRampY - rampLength * Math.sin(thetaRad);
+
+        ctx.fillStyle = '#cbd5e1';
+        ctx.beginPath();
+        ctx.moveTo(startRampX, startRampY);      
+        ctx.lineTo(endRampX, endRampY);        
+        ctx.lineTo(endRampX, startRampY);       
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.strokeStyle = '#64748b';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(startRampX - 20, startRampY);
+        ctx.lineTo(endRampX + 20, startRampY);
+        ctx.stroke();
+
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(startRampX, startRampY);
+        ctx.lineTo(endRampX, endRampY);
+        ctx.stroke();
+
+        ctx.strokeStyle = '#8b5cf6';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(startRampX, startRampY, 50, 0, -thetaRad, true);
+        ctx.stroke();
+        ctx.fillStyle = '#8b5cf6';
+        ctx.font = 'bold 12px monospace';
+        ctx.fillText(angleDeg + '°', startRampX + 55, startRampY - 12);
+
+        // Posición del cilindro
+        const d = rampLength * 0.55; 
+        const cx = startRampX + d * Math.cos(thetaRad);
+        const cy = startRampY - d * Math.sin(thetaRad);
+
+        const vRadius = rCm * 10 + 15; 
+        const lx = vRadius * Math.cos(thetaRad + Math.PI/2);
+        const ly = -vRadius * Math.sin(thetaRad + Math.PI/2);
+
+        ctx.fillStyle = '#d97706';
+        ctx.strokeStyle = '#451a03';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(cx + lx, cy + ly, vRadius, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#451a03';
+        ctx.beginPath();
+        ctx.arc(cx + lx, cy + ly, 4, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // Eje del cilindro
+        const bx = vRadius * Math.cos(thetaRad);
+        const by = -vRadius * Math.sin(thetaRad);
+        ctx.strokeStyle = '#ea580c';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(cx + lx - bx, cy + ly - by);
+        ctx.lineTo(cx + lx + bx, cy + ly + by);
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 12px Arial';
+        ctx.fillText('•', cx + lx - bx + 3, cy + ly - by + 4);
+        ctx.fillText('×', cx + lx + bx - 10, cy + ly + by + 4);
+
+        const originX = cx + lx;
+        const originY = cy + ly;
+
+        // Vector B (apuntando hacia arriba)
+        const bArrowLen = 65 + B * 10;
+        vectorBPos = { x: originX, y: originY - bArrowLen, valor: `${B.toFixed(3)} T` };
+        drawArrow(ctx, originX, originY, vectorBPos.x, vectorBPos.y, '#b91c1c', 10);
+        ctx.fillStyle = '#b91c1c';
+        ctx.font = 'bold 15px sans-serif';
+        ctx.fillText('B', vectorBPos.x + 8, vectorBPos.y + 5);
+
+        // Vector μ (momento dipolar) con flecha y etiqueta de corriente
+        const muArrowLen = 60 + mu * 80;
+        const normalAngle = thetaRad + Math.PI/2; // perpendicular al eje del cilindro
+        const mx = muArrowLen * Math.cos(normalAngle);
+        const my = -muArrowLen * Math.sin(normalAngle);
+        vectorMuPos = { x: originX + mx, y: originY + my, valor: `${mu.toFixed(3)} A·m²` };
+        
+        drawArrow(ctx, originX, originY, vectorMuPos.x, vectorMuPos.y, '#10b981', 12);
+        // Etiqueta μ y corriente
+        ctx.fillStyle = '#10b981';
+        ctx.font = 'bold 15px sans-serif';
+        ctx.fillText('μ', vectorMuPos.x + 12, vectorMuPos.y - 5);
+        ctx.fillStyle = '#0f172a';
+        ctx.font = 'bold 12px sans-serif';
+        // Mostrar corriente cerca del vector μ
+        const labelI = `I = ${I.toFixed(2)} A`;
+        ctx.fillText(labelI, vectorMuPos.x + 12, vectorMuPos.y + 18);
+
+        // Vector peso (w) hacia abajo
+        const weightArrowLength = 55 + (mGrams / 8);
+        vectorWPos = { x: originX, y: originY + weightArrowLength, valor: `${(m * g).toFixed(2)} N` };
+        drawArrow(ctx, originX, originY, vectorWPos.x, vectorWPos.y, '#0284c7', 10);
+        ctx.fillStyle = '#0284c7';
+        ctx.font = 'bold 15px sans-serif';
+        ctx.fillText('w', vectorWPos.x + 8, vectorWPos.y + 5);
+
+        // Etiquetas de dimensiones
+        ctx.fillStyle = '#1e293b';
+        ctx.font = 'bold 12px sans-serif';
+        ctx.fillText(`r = ${rCm} cm`, cx - 10, cy - vRadius - 8);
+        ctx.fillText(`L = ${LCm} cm`, cx + bx + 10, cy + by);
+
+        renderTooltip();
+        drawIsolatedVectors(mu, B, m * g, thetaRad, I);
+    }
+
+    function drawIsolatedVectors(mu, B, weight, thetaRad, I) {
+        vCtx.clearRect(0, 0, vCanvas.width, vCanvas.height);
+        
+        const vCenterX = vCanvas.width / 2;
+        const vCenterY = vCanvas.height / 2;
+        const labelColor = '#475569';
+        const lineAxisColor = 'rgba(0,0,0,0.06)';
+
+        vCtx.strokeStyle = lineAxisColor;
+        vCtx.lineWidth = 1;
+        vCtx.beginPath();
+        vCtx.moveTo(vCenterX - 140, vCenterY); vCtx.lineTo(vCenterX + 140, vCenterY);
+        vCtx.moveTo(vCenterX, vCenterY - 80); vCtx.lineTo(vCenterX, vCenterY + 80);
+        vCtx.stroke();
+
+        // B
+        const bLen = 60 + B * 12;
+        drawArrow(vCtx, vCenterX, vCenterY, vCenterX, vCenterY - bLen, '#b91c1c', 10);
+        vCtx.fillStyle = '#b91c1c';
+        vCtx.font = 'bold 13px sans-serif';
+        vCtx.fillText('B', vCenterX + 8, vCenterY - bLen + 5);
+
+        // μ con flecha y corriente
+        const muLen = 50 + mu * 70;
+        const normalAngle = thetaRad + Math.PI/2;
+        const mx = muLen * Math.cos(normalAngle);
+        const my = -muLen * Math.sin(normalAngle);
+        const endX = vCenterX + mx;
+        const endY = vCenterY + my;
+        drawArrow(vCtx, vCenterX, vCenterY, endX, endY, '#10b981', 11);
+        vCtx.fillStyle = '#10b981';
+        vCtx.font = 'bold 13px sans-serif';
+        vCtx.fillText('μ', endX + 8, endY - 2);
+        vCtx.fillStyle = '#0f172a';
+        vCtx.font = 'bold 11px sans-serif';
+        vCtx.fillText(`I = ${I.toFixed(2)} A`, endX + 8, endY + 16);
+
+        // w
+        const wLen = 50 + (weight * 6);
+        drawArrow(vCtx, vCenterX, vCenterY, vCenterX, vCenterY + wLen, '#0284c7', 10);
+        vCtx.fillStyle = '#0284c7';
+        vCtx.font = 'bold 13px sans-serif';
+        vCtx.fillText('w', vCenterX - 14, vCenterY + wLen + 2);
+
+        vCtx.fillStyle = labelColor;
+        vCtx.font = '600 11px sans-serif';
+        vCtx.fillText("DIAGRAMA DE VECTORES LIBRES (ESPACIO VECTORIAL)", 15, 22);
+    }
+
+    function renderTooltip() {
+        const distMu = Math.hypot(mousePos.x - vectorMuPos.x, mousePos.y - vectorMuPos.y);
+        const distB = Math.hypot(mousePos.x - vectorBPos.x, mousePos.y - vectorBPos.y);
+        const distW = Math.hypot(mousePos.x - vectorWPos.x, mousePos.y - vectorWPos.y);
+        
+        let label = "";
+        let valText = "";
+        let boxX = mousePos.x + 15;
+        let boxY = mousePos.y + 15;
+
+        if (distMu < 15) {
+            label = "Momento Dipolar Magnético (μ)";
+            valText = "Magnitud: " + vectorMuPos.valor;
+        } else if (distB < 15) {
+            label = "Campo Magnético Uniforme (B)";
+            valText = "Magnitud: " + vectorBPos.valor;
+        } else if (distW < 15) {
+            label = "Fuerza del Peso Propio (w = mg)";
+            valText = "Magnitud: " + vectorWPos.valor;
+        }
+
+        if (label !== "") {
+            ctx.save();
+            ctx.fillStyle = "rgba(15, 23, 42, 0.9)";
+            ctx.strokeStyle = "#38bdf8";
+            ctx.lineWidth = 1;
+            
+            ctx.beginPath();
+            ctx.roundRect(boxX, boxY, 220, 45, 5);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 11px sans-serif";
+            ctx.fillText(label, boxX + 8, boxY + 18);
+            ctx.fillStyle = "#cbd5e1";
+            ctx.font = "11px monospace";
+            ctx.fillText(valText, boxX + 8, boxY + 34);
+            ctx.restore();
+        }
+    }
+
+    canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mousePos.x = (e.clientX - rect.left) * (canvas.width / rect.width);
+        mousePos.y = (e.clientY - rect.top) * (canvas.height / rect.height);
+        draw();
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+        mousePos = { x: -100, y: -100 };
+        draw();
+    });
+
+    function resetSimulador() {
+        inputs.m.value = "262";
+        inputs.N.value = "13";
+        inputs.B.value = "477";
+        inputs.angle.value = "30";
+        inputs.L.value = "12.7";
+        inputs.r.value = "3.5";
+        inputs.I.value = "1.5";
+        draw();
+    }
+
+    Object.values(inputs).forEach(input => {
+        input.addEventListener('input', draw);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(draw, 100);
+    });
+</script>
+</body>
+</html>
