@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Comunidad de Estudios Independiente “Juan de Dios Bátiz” · Información General</title>
+    <!-- Meta description optimizada (pirámide invertida) -->
+    <meta name="description" content="Comunidad de Estudios Independiente “Juan de Dios Bátiz” – iniciativa estudiantil sin fines de lucro fundada el 7 de abril de 2024. Conoce su historia, fundadores, administración, comité académico y colaboradores." />
+    <link rel="canonical" href="https://proyectos.emiliocolor.com/cei-jdb/" />
+    <!-- Font Awesome 6 (sutil) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ===== RESET Y ESTILO BASE WIKIPEDIA ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f6f6f6;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            color: #222;
+            padding: 30px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .app-container {
+            max-width: 1100px;
+            width: 100%;
+            background: #ffffff;
+            padding: 28px 32px 20px 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #d4d4d4;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        /* ===== ENCABEZADO PRINCIPAL (sin logo) ===== */
+        .header-principal {
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 14px;
+            margin-bottom: 20px;
+        }
+
+        .header-titulos h1 {
+            font-size: 28px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            color: #1a1a1a;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .header-titulos h1 small {
+            font-size: 20px;
+            font-weight: 400;
+            color: #555;
+        }
+        .header-titulos .subtitulo {
+            font-size: 15px;
+            color: #555;
+            margin-top: 4px;
+            font-style: italic;
+        }
+        .header-titulos .subtitulo i {
+            margin-right: 6px;
+            color: #888;
+        }
+
+        /* ===== INFOBOX (WIKIPEDIA) ===== */
+        .infobox {
+            float: right;
+            clear: right;
+            width: 280px;
+            background: #f9f9f9;
+            border: 1px solid #d4d4d4;
+            padding: 14px 16px;
+            margin: 0 0 16px 20px;
+            font-size: 14px;
+            line-height: 1.6;
+            border-radius: 2px;
+        }
+        .infobox .infobox-titulo {
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+        .infobox .fila {
+            display: flex;
+            padding: 4px 0;
+            border-bottom: 1px dotted #eee;
+        }
+        .infobox .fila .etiqueta {
+            font-weight: 600;
+            width: 90px;
+            flex-shrink: 0;
+        }
+        .infobox .fila .valor {
+            flex: 1;
+        }
+
+        /* Contenedor del logo dentro de la infobox */
+        .infobox-logo {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .infobox-logo img {
+            max-width: 180px;
+            width: 100%;
+            height: auto;
+            display: inline-block;
+        }
+
+        /* ===== CONTENEDORES DE LOGO PARA SECCIONES (estilo unificado) ===== */
+        .logo-seccion {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .logo-seccion .logo-container {
+            width: 120px;
+            height: 120px;
+            background: #f0f0f0;
+            border: 1px solid #d4d4d4;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .logo-seccion .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .logo-seccion .logo-container i {
+            font-size: 40px;
+            color: #999;
+        }
+        .logo-seccion .logo-descripcion {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* ===== CONTENIDO PRINCIPAL ===== */
+        .contenido {
+            overflow: hidden; /* para contener el float */
+        }
+
+        /* ===== TÍTULOS DE SECCIÓN (estilo Wikipedia) ===== */
+        .seccion-titulo {
+            font-size: 20px;
+            font-weight: 400;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 4px;
+            margin: 24px 0 14px 0;
+            color: #1a1a1a;
+        }
+        .seccion-titulo i {
+            margin-right: 8px;
+            color: #777;
+            font-size: 18px;
+        }
+
+        .texto-general {
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+        .texto-general strong {
+            font-weight: 600;
+            color: #111;
+        }
+
+        /* ===== TABLAS ===== */
+        .tabla-miembros {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin: 6px 0 12px 0;
+        }
+        .tabla-miembros th {
+            text-align: left;
+            font-weight: 600;
+            background: #f2f2f2;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            font-size: 13px;
+        }
+        .tabla-miembros td {
+            padding: 7px 10px;
+            border: 1px solid #ddd;
+            vertical-align: middle;
+        }
+        .tabla-miembros tr:nth-child(even) td {
+            background: #fafafa;
+        }
+
+        .badge-cargo {
+            background: #eaeaea;
+            padding: 1px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #333;
+            display: inline-block;
+        }
+
+        /* ===== TARJETAS DE FUNDADORES ===== */
+        .grid-tarjetas {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 8px 0 12px 0;
+        }
+        .tarjeta-persona {
+            background: #f9f9f9;
+            padding: 12px 14px;
+            border: 1px solid #e8e8e8;
+        }
+        .tarjeta-persona .nombre {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .tarjeta-persona .cargo {
+            font-size: 13px;
+            color: #555;
+            margin-top: 3px;
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin: 8px 0 12px 0;
+        }
+        .timeline-item {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            font-size: 14px;
+            padding: 6px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        .timeline-item .fecha {
+            font-weight: 600;
+            color: #222;
+            min-width: 130px;
+        }
+        .timeline-item .descripcion {
+            color: #333;
+        }
+        .timeline-item .descripcion i {
+            margin-right: 6px;
+            color: #888;
+        }
+
+        /* ===== COLABORADOR ===== */
+        .colaborador-destacado {
+            background: #f9f9f9;
+            padding: 14px 16px;
+            margin: 10px 0 14px 0;
+            border-left: 4px solid #aaa;
+        }
+        .colaborador-destacado .nombre-colab {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .colaborador-destacado .detalle-colab {
+            font-size: 14px;
+            color: #444;
+            margin-top: 4px;
+        }
+
+        /* ===== FECHA ACTA ===== */
+        .fecha-acta {
+            font-size: 14px;
+            color: #555;
+            margin-top: 20px;
+            padding-top: 12px;
+            border-top: 1px solid #e0e0e0;
+            text-align: right;
+        }
+
+        /* ===== PIE DE PÁGINA ===== */
+        .footer-creditos {
+            margin-top: 32px;
+            padding-top: 14px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 13px;
+            color: #666;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .footer-creditos i {
+            margin: 0 4px;
+        }
+        .footer-creditos a {
+            color: #0645ad;
+            text-decoration: none;
+        }
+        .footer-creditos a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .app-container { padding: 18px 16px; }
+            .infobox {
+                float: none;
+                width: 100%;
+                margin: 0 0 16px 0;
+            }
+            .header-principal { flex-direction: column; align-items: flex-start; }
+            .header-titulos h1 { font-size: 24px; }
+            .grid-tarjetas { grid-template-columns: 1fr; }
+            .timeline-item { flex-direction: column; align-items: flex-start; gap: 2px; }
+            .timeline-item .fecha { min-width: auto; }
+            .logo-seccion { flex-direction: column; align-items: flex-start; }
+            .logo-seccion .logo-container { width: 100px; height: 100px; }
+            .infobox-logo img { max-width: 140px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- ===== ENCABEZADO PRINCIPAL (sin logo) ===== -->
+    <div class="header-principal">
+        <div class="header-titulos">
+            <h1>Comunidad de Estudios Independiente <small>“Juan de Dios Bátiz”</small></h1>
+            <div class="subtitulo">Información General</div>
+        </div>
+    </div>
+
+    <!-- ===== INFOBOX (con logo grande) ===== -->
+    <div class="infobox">
+        <div class="infobox-logo">
+            <img src="logojdb.png" alt="Logo CEI" />
+        </div>
+        <div class="infobox-titulo">Datos generales</div>
+        <div class="fila"><span class="etiqueta">Fundación</span><span class="valor">7 de abril de 2024</span></div>
+        <div class="fila"><span class="etiqueta">Integrantes</span><span class="valor">650 personas</span></div>
+        <div class="fila"><span class="etiqueta">Carácter</span><span class="valor">Extracurricular, voluntario</span></div>
+        <div class="fila"><span class="etiqueta">Ámbito</span><span class="valor">Estudiantil · Académico</span></div>
+        <div class="fila"><span class="etiqueta">Sin fines de lucro</span><span class="valor"><i class="fas fa-check" style="color:#2a7a2a;"></i> Sí</span></div>
+    </div>
+
+    <!-- ===== CONTENIDO PRINCIPAL ===== -->
+    <div class="contenido">
+
+        <!-- 1. VISIÓN GENERAL -->
+        <h2 class="seccion-titulo"><i class="fas fa-bullseye"></i> Visión general</h2>
+        <p class="texto-general">
+            <strong>Comunidad de Estudios Independiente “Juan de Dios Bátiz”</strong> (CEI) es una iniciativa estudiantil, académica e independiente, sin fines de lucro, creada para fomentar el aprendizaje colaborativo, el intercambio de conocimientos y el desarrollo científico entre sus integrantes.
+        </p>
+
+        <!-- 2. HISTORIA Y CAMBIOS DE NOMBRE -->
+        <h2 class="seccion-titulo"><i class="fas fa-history"></i> Historia y cambios de nombre</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <span class="fecha"> 7 de abril de 2024:</span>
+                <span class="descripcion">“Comunidad de Estudio” — fundación original</span>
+            </div>
+            <div class="timeline-item">
+                <span class="fecha"> 31 de mayo de 2026:</span>
+                <span class="descripcion">“Comunidad de Estudio Independiente del CECyT 9 ‘Juan de Dios Bátiz’” — primera actualización</span>
+            </div>
+            <div class="timeline-item">
+                <span class="fecha"> 1 de septiembre de 2026:</span>
+                <span class="descripcion">“Comunidad de Estudios Independiente ‘Juan de Dios Bátiz’” — denominación actual (CEI)</span>
+            </div>
+        </div>
+        <p class="texto-general" style="font-size: 14px; color: #555; margin-top: -4px;">
+        La comunidad ha mantenido su espíritu colaborativo y su independencia institucional a lo largo de todo este periodo.
+        </p>
+
+        <!-- 3. FUNDADORES -->
+        <h2 class="seccion-titulo"><i class="fas fa-handshake"></i> Fundadores</h2>
+        <div class="grid-tarjetas">
+            <div class="tarjeta-persona">
+                <div class="nombre">Abraham Gutiérrez Arquieta</div>
+                <div class="cargo"><span class="badge-cargo">Secretario General y Coordinador de la Unidad de Informática</span></div>
+            </div>
+            <div class="tarjeta-persona">
+                <div class="nombre">Emilio Calep Vargas Yáñez</div>
+                <div class="cargo"><span class="badge-cargo">Secretario Administrativo y Coordinador de la Unidad Materiales Educativos</span></div>
+            </div>
+            <div class="tarjeta-persona">
+                <div class="nombre">Angel Zohet Muñoz Aceves</div>
+                <div class="cargo"><span class="badge-cargo">Secretario de Convocatorias y Selección</span></div>
+            </div>
+        </div>
+                <p class="texto-general" style="font-size: 14px; color: #555; margin-top: -4px;">
+            <i class="fas fa-info-circle"></i> A partir del 02 de septiembre de 2026, Abraham Gutiérrez Arquieta y Emilio Calep Vargas Yáñez se encuentran retirados de toda actividad de la comunidad, así como de las responsabilidades o situaciones en las que se encuentre la comunidad a partir de esta fecha.
+        </p>
+
+        <!-- 4. ADMINISTRACIÓN GENERAL (con logo unificado) -->
+        <h2 class="seccion-titulo"><i class="fas fa-user-tie"></i> Administración General</h2>
+        <div class="logo-seccion">
+            <div class="logo-container">
+                <img src="logocadm.png" alt="Logo Administración" />
+            </div>
+            <div class="logo-descripcion">
+                <i class="fas fa-users-cog"></i> Equipo de administración y coordinación
+            </div>
+        </div>
+        <table class="tabla-miembros">
+            <thead>
+                <tr><th>Nombre</th><th>Cargo / función</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Gabriel Iker Flores Aguilar</td><td>Secretario Académico</td></tr>
+                <tr><td>Enrique Fernando Nuñez Taba</td><td>Secretario de Comunicación y Difusión</td></tr>
+                <tr><td>Luis Allejandro Morett Aparicio</td><td>Secretario de Normatividad y Desarrollo Institucional</td></tr>
+                <tr><td>Gael Gonzaga</td><td>Coordinador de Recursos y Materiales</td></tr>
+                <tr><td>Rodrigo Constantino</td><td>Coordinador de Proyectos e Iniciativas</td></tr>
+            </tbody>
+        </table>
+        <p class="texto-general" style="font-size: 13px; color: #666; margin-top: -4px;">
+        A estos cargos se suman los Fundadores con sus respectivas responsabilidades.
+        </p>
+
+        <!-- 5. COMITÉ ACADÉMICO (con logo unificado) -->
+        <h2 class="seccion-titulo"><i class="fas fa-graduation-cap"></i> Comité Académico</h2>
+        <div class="logo-seccion">
+            <div class="logo-container">
+                <img src="logoca.png" alt="Logo Comité Académico" />
+            </div>
+            <div class="logo-descripcion">
+                <i class="fas fa-chalkboard-teacher"></i> Órgano de asesoría y revisión académica
+            </div>
+        </div>
+        <table class="tabla-miembros">
+            <thead>
+                <tr><th>Nombre</th><th>Función</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Iker Alexander Chavarria Acosta</td><td><span class="badge-cargo">Presidente</span></td></tr>
+                <tr><td>José Francisco Paredes Rodríguez</td><td><span class="badge-cargo">Vicepresidente</span></td></tr>
+                <tr><td>Iker Alessandro Cigarroa Camargo</td><td><span class="badge-cargo">Secretario Técnico</span></td></tr>
+                <tr><td>Santiago Cruz</td><td>Integrante</td></tr>
+                <tr><td>Veronica Guerrero</td><td>Integrante</td></tr>
+                <tr><td>Josue Badillo</td><td>Integrante</td></tr>
+                <tr><td>Aveitua Villeda</td><td>Integrante</td></tr>
+                <tr><td>Héctor Esqueda</td><td>Integrante</td></tr>
+                <tr><td>Bryan Joseph</td><td>Integrante</td></tr>
+                <tr><td>Dante Santos</td><td>Integrante</td></tr>
+                <tr><td>Elías Caleb</td><td>Integrante</td></tr>
+                <tr><td>Emilio Peña</td><td>Integrante</td></tr>
+                <tr><td>Nanzil Andrea</td><td>Integrante</td></tr>
+                <tr><td>Jonathan Espíndola</td><td>Integrante</td></tr>
+            </tbody>
+        </table>
+
+        <!-- 6. COLABORADORES -->
+        <h2 class="seccion-titulo"><i class="fas fa-hand-sparkles"></i> Colaboradores destacados</h2>
+        <div class="colaborador-destacado">
+            <div class="nombre-colab">EmilioColor®</div>
+            <div class="detalle-colab">
+                Apoyo voluntario en el desarrollo, implementación y mantenimiento de herramientas digitales, así como en actividades de difusión y comunicación.
+                <span style="display: block; margin-top: 4px; font-size: 13px; color: #666;">
+                    <i class="fas fa-info-circle"></i> Colaboración externa sin fines de lucro, sin participación en la organización o representación de la Comunidad.
+                </span>
+            </div>
+        </div>
+
+        <!-- 7. RECONOCIMIENTO Y CIERRE -->
+        <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 24px 0 16px 0;" />
+        <p class="texto-general" style="font-size: 15px; font-weight: 500; color: #1a1a1a;">
+            La Comunidad de Estudios Independiente “Juan de Dios Bátiz” es un espacio de participación académica, extracurricular y sin fines de lucro, que agrupa a 650 personas comprometidas con el aprendizaje colaborativo y la excelencia.
+        </p>
+        <p class="texto-general" style="font-size: 14px; color: #444;">
+            El presente documento refleja la constitución y estructura vigente al <strong>6 de septiembre de 2026</strong>, conforme al acta constitutiva.
+        </p>
+        <div class="fecha-acta">
+        Ciudad de México, 6 de septiembre de 2026
+        </div>
+
+    </div> <!-- fin .contenido -->
+
+    <!-- ===== PIE DE PÁGINA CON CRÉDITOS ===== -->
+    <div class="footer-creditos">
+        <i class="fas fa-code"></i> Desarrollado por <a href="https://emiliocolor.com" target="_blank" rel="noopener">EmilioColor®</a> · 
+        <i class="fas fa-globe"></i> <a href="https://proyectos.emiliocolor.com/cei-jdb/informacion" target="_blank" rel="noopener">proyectos.emiliocolor.com</a>
+        <br />
+        <span style="font-size: 12px; color: #999;">Contenido bajo responsabilidad de la Comunidad de Estudios Independiente “Juan de Dios Bátiz”</span>
+    </div>
+
+</div> <!-- fin .app-container -->
+
+</body>
+</html>
